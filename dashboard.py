@@ -81,11 +81,11 @@ with st.sidebar:
     st.markdown('**네이버 쇼핑 API 호출기**')
 
     @st.cache_data
-    def load_fcategory_df():
+    def load_category_df():
         category_df = pd.read_excel("category_20240610_152534.xls")
         return category_df
 
-    category_df = load_fcategory_df()
+    category_df = load_category_df()
     category_columns = ["대분류", "중분류", "소분류", "세분류"]
 
     main_category = st.selectbox("대분류", category_df["대분류"].unique())

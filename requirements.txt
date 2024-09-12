@@ -7,4 +7,5 @@ sktime==0.29.0
 statsmodels==0.14.0
 streamlit_option_menu==0.3.13
 streamlit==1.32
+xlrd >= 1.0.0
 git+https://github.com/streamlit/gsheets-connection
