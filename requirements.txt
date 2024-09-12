@@ -8,3 +8,4 @@ st_gsheets_connection==0.0.4
 statsmodels==0.14.0
 streamlit==1.32.0
 streamlit_option_menu==0.3.13
+st-gsheets-connection==0.0.4
