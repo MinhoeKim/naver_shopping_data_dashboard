@@ -147,20 +147,21 @@ def data_visualization():
     st.divider()
     st.write(f"**{st.session_state.worksheet_name}**")
     st.write(st.session_state.data)
-    save_to_google_sheets_button()
+    # save_to_google_sheets_button()
     fig = time_series_and_pie(st.session_state.data, st.session_state.worksheet_name)
     st.plotly_chart(fig, use_container_width=True)
     html_download_button(fig, st.session_state.worksheet_name+"time_series_and_pie")
 
-def save_to_google_sheets_button():
-    if st.button('구글시트에 저장'):
-        if st.session_state.worksheet_name in worksheet_names:
-            conn.clear(worksheet=st.session_state.worksheet_name)
-            conn.update(worksheet=st.session_state.worksheet_name, data=st.session_state.data)
-            st.success(f'데이터가 구글 스프레드시트에 업데이트 되었습니다.\n{st.session_state.worksheet_name}')
-        else:
-            conn.create(worksheet=st.session_state.worksheet_name, data=st.session_state.data)
-            st.success(f'데이터가 구글 스프레드시트에 저장되었습니다.\n{st.session_state.worksheet_name}')
+# #구글시트에 저장버튼 함수
+# def save_to_google_sheets_button():
+#     if st.button('구글시트에 저장'):
+#         if st.session_state.worksheet_name in worksheet_names:
+#             conn.clear(worksheet=st.session_state.worksheet_name)
+#             conn.update(worksheet=st.session_state.worksheet_name, data=st.session_state.data)
+#             st.success(f'데이터가 구글 스프레드시트에 업데이트 되었습니다.\n{st.session_state.worksheet_name}')
+#         else:
+#             conn.create(worksheet=st.session_state.worksheet_name, data=st.session_state.data)
+#             st.success(f'데이터가 구글 스프레드시트에 저장되었습니다.\n{st.session_state.worksheet_name}')
 
 # 분석 페이지 함수
 def analytics_page():
@@ -195,7 +196,7 @@ def forecast_page():
         non_data_error()
         return
     st.header("📑구매 예측")
-    st.success("연령대별 Dickey-Fuller 테스트, ACF, PACF 를 제공합니다.")
+    st.success("autoARIMA 모델을 이용하여 연령대별 구매횟수를 예측합니다")
     st.divider()
     forecast_visualization()
 
