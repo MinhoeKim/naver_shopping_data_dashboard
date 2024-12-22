@@ -2,15 +2,16 @@ import streamlit as st
 import pandas as pd
 from naver_shopping_api import *
 from data_to_fig import *
-from streamlit_gsheets import GSheetsConnection
+#from streamlit_gsheets import GSheetsConnection
 import gspread
 from streamlit_option_menu import option_menu
 from datetime import date, timedelta
 import base64
+from gspread_dataframe import get_as_dataframe
 
 st.set_page_config(page_title=None, page_icon=None, layout="wide")
 
-conn = st.connection("gsheets", type=GSheetsConnection)
+#conn = st.connection("gsheets", type=GSheetsConnection)
 
 client_id = st.secrets["naver"]["naver_client_id"]
 client_secret = st.secrets["naver"]["naver_client_secret"]
@@ -66,7 +67,13 @@ with st.sidebar:
     # 구글시트 데이터 불러오기
     @st.cache_data
     def load_from_gsheet(selected_worksheet):
-        data = conn.read(worksheet=selected_worksheet)
+        worksheet = sh.worksheet(selected_worksheet)
+                # 4. 워크시트 데이터를 리스트로 가져오기
+        #rows = worksheet.get_all_values()  # 모든 데이터 가져오기
+        data = get_as_dataframe(worksheet=worksheet)
+        # 5. 리스트를 DataFrame으로 변환
+        #data = pd.DataFrame(rows[1:], columns=rows[0])  # 첫 행은 헤더로 사용
+        #data = conn.read(worksheet=selected_worksheet)
         return data
     
     selected_worksheet = st.selectbox("**구글시트 데이터**", worksheet_names)
@@ -115,7 +122,9 @@ with st.sidebar:
 def non_data_error():
     st.title("🍀네이버 쇼핑 연령대별 구매예측 대시보드")
     st.divider()
+
     st.error("데이터가 비어있습니다. 사이드바를 통해서 데이터를 선택해주세요.")
+
     st.markdown("""
     ## 사이드바
 
@@ -152,7 +161,8 @@ def data_visualization():
     st.plotly_chart(fig, use_container_width=True)
     html_download_button(fig, st.session_state.worksheet_name+"time_series_and_pie")
 
-# #구글시트에 저장버튼 함수
+    
+#구글시트에 저장버튼 함수
 # def save_to_google_sheets_button():
 #     if st.button('구글시트에 저장'):
 #         if st.session_state.worksheet_name in worksheet_names:
